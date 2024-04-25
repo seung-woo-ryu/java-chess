@@ -8,8 +8,9 @@
 
 # ToDo
 # Piece
-- [ ] 이동 가능한 위치 모두 반환
-  - List Position getAllNextPosition()
+- [x] 이동 가능한 위치 모두 반환 인터페이스 선언
+  - List < Position >  getAllNextPosition()
+- [ ] void move()
 # 폰(pawn)
 - [ ]  첫 이동일 땐 1 or 2칸 전진
 - [ ]  1칸 전진
@@ -63,6 +64,18 @@
     - Piece가 Null인지
 
 # Position
-- 필드: Enum Row(8~1, 위 → 아래)
-- 필드: Enum Column(a-f, 왼 → 오)
+- 필드: Enum Model.position.Row(8~1, 위 → 아래)
+- 필드: Enum Column(a-h, 왼 → 오)
 
+# Team
+- 흑, 백
+
+---
+- [x] Enum Row, Column 생성
+    - Row(8~1), Column(a-h)
+- [x] Class Position 생성
+    - 필드: Enum Model.position.Row(8~1, 위 → 아래)
+    - 필드: Enum Column(a-h, 왼 → 오)
+- [x] Team 생성
+  - WHITE(1, 흰색)
+  - BLACK(1, 검정)
