@@ -10,13 +10,20 @@
 # Piece
 - [x] 이동 가능한 위치 모두 반환 인터페이스 선언
   - List < Position >  getAllNextPosition()
-- [ ] void move()
+- [x] void move() 체스
+
+# AbstractPiece
+- [x] void move()
+  1. 모든 다음 이동 가능한 포지션 얻기
+  2. 1 리스트에서 다음 이동하고 싶은 위치가 포함되면
+  3. if 적이 있는 위치면 적 제거.
+  4. 위치 이동.
+  - [x] 이동 가능한 위치가 없다면 throw new IllegalArgumentException();  
 # 폰(pawn)
-- [ ]  첫 이동일 땐 1 or 2칸 전진
-- [ ]  1칸 전진
-- [ ]  대각선 전면으로 상대 기물 공격
+- [X]  첫 이동일 땐 1 or 2칸 전진
+- [X]  대각선 전면으로 상대 기물 공격
 - [ ]  승급 킹을 제외한 어떤 기물로도 변경 가능.
-- [ ]  필드: 이름(폰), 점수(1점), 색깔, 포지션, Boolean isFirstMove
+- [x]  필드: 이름(폰), 점수(1점), 색깔, 포지션
 - 전면 판가름은 색깔에 따라서
 
 ## 퀸(queen)
@@ -27,7 +34,6 @@
 ## 비숍(bishop)
 
 - [ ]  대각선 이동
-    - 우리 기물위치 전까지
 - 필드: 이름(비숍) 점수(3점) ,색깔,포지션
 
 ## 룩(rook)
@@ -54,15 +60,12 @@
 - Null 객체
 
 # ChessBoard
-
 - [ ]  현재 체크인지 판단
     - params: 색깔
     - 내 색깔 킹 위치 반환.
     - 상대방 기물들의 모든 이동 가능 위치 반환.
     - 1,2의 교집합이 생기면 true 아니면 false
--  필드: Map<Position, Piece>
-    - Piece가 Null인지
-
+    
 # Position
 - 필드: Enum Model.position.Row(8~1, 위 → 아래)
 - 필드: Enum Column(a-h, 왼 → 오)

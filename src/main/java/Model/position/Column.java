@@ -17,4 +17,29 @@ public enum Column {
         this.value = value;
         this.name = name;
     }
+
+    public static int getLeftDirection() {
+        return -1;
+    }
+    public static int getRightDirection() {
+        return 1;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Column move(int step) {
+        for (Column column : Column.values()) {
+            if (column.getValue() == (this.value + step)) {
+                return column;
+            }
+        }
+
+        throw new IllegalArgumentException("가능한 Column(1~8)에서 벗어났습니다");
+    }
 }
