@@ -28,46 +28,42 @@
 
 ## 퀸(queen)
 
-- [ ]  비숍,룩 이동
+- [X]  비숍,룩 이동
 - 필드: 이름(퀸), 점수(9점), 색깔,포지션
 
 ## 비숍(bishop)
 
-- [ ]  대각선 이동
+- [X]  대각선 이동
 - 필드: 이름(비숍) 점수(3점) ,색깔,포지션
 
 ## 룩(rook)
 
-- [ ]  4방위 이동
+- [X]  4방위 이동
     - 우리 기물 위치 전까지
 - 필드: 이름 (룩), 점수(5점), 색깔,포지션
 
 ## 나이트(knight)
 
-- [ ] 4방위 이동 1 + 4방위 이동 방향 대각선 1 이동
+- [X] 4방위 이동 1 + 4방위 이동 방향 대각선 1 이동
     - 적 기물 위치로
     - 우리 기물 위치 x
 - 필드: 이름(나이트), 점수(3점), 색깔,포지션
 
 ## 킹(king)
 
-- [ ] 4방위 1칸 이동.
+- [X] 4방위 1칸 이동.
     - 적 기물 위치로 우리 기물 위치 x
 - 필드: 이름(킹), 점수(0점), 색깔, 포지션
 
-## Null piece(?)
-
+## Null piece
 - Null 객체
 
 # ChessBoard
-- [ ]  현재 체크인지 판단
-    - params: 색깔
-    - 내 색깔 킹 위치 반환.
-    - 상대방 기물들의 모든 이동 가능 위치 반환.
-    - 1,2의 교집합이 생기면 true 아니면 false
-    
+- [X]  현재 체크인지 판단
+- [X]  체크메이트인지 판단
+
 # Position
-- 필드: Enum Model.position.Row(8~1, 위 → 아래)
+- 필드: Enum model.position.Row(8~1, 위 → 아래)
 - 필드: Enum Column(a-h, 왼 → 오)
 
 # Team
@@ -77,8 +73,9 @@
 - [x] Enum Row, Column 생성
     - Row(8~1), Column(a-h)
 - [x] Class Position 생성
-    - 필드: Enum Model.position.Row(8~1, 위 → 아래)
+    - 필드: Enum model.position.Row(8~1, 위 → 아래)
     - 필드: Enum Column(a-h, 왼 → 오)
 - [x] Team 생성
   - WHITE(1, 흰색)
   - BLACK(1, 검정)
+  - NOTHING(0,"Nothing") NullPiece용
