@@ -4,7 +4,7 @@ import model.chessboard.ChessBoardWrapper;
 import model.position.Column;
 import model.position.Position;
 import model.position.Row;
-import model.team.Team;
+import model.Team;
 import java.util.ArrayList;
 import java.util.List;
 

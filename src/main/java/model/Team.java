@@ -1,4 +1,4 @@
-package model.team;
+package model;
 
 public enum Team {
     WHITE(1, "흰색"),

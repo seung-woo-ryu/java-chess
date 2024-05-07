@@ -3,7 +3,7 @@ package model.piece;
 import java.util.Collections;
 import java.util.List;
 import model.position.Position;
-import model.team.Team;
+import model.Team;
 
 public class NullPiece extends AbstractPiece {
 

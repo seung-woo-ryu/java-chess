@@ -5,7 +5,7 @@ import model.position.Column;
 import model.position.GridPosition;
 import model.position.Position;
 import model.position.Row;
-import model.team.Team;
+import model.Team;
 import java.util.ArrayList;
 import java.util.List;
 

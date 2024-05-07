@@ -1,11 +1,8 @@
 package model.piece;
 
-import java.util.Optional;
 import model.chessboard.ChessBoardWrapper;
-import model.position.Column;
 import model.position.Position;
-import model.position.Row;
-import model.team.Team;
+import model.Team;
 
 public abstract class AbstractPiece implements Piece{
 

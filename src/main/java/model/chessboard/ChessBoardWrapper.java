@@ -9,7 +9,7 @@ import model.position.Column;
 import model.position.GridPosition;
 import model.position.Position;
 import model.position.Row;
-import model.team.Team;
+import model.Team;
 
 public class ChessBoardWrapper {
 

@@ -4,7 +4,7 @@ import model.piece.AbstractTest;
 import model.position.Column;
 import model.position.Position;
 import model.position.Row;
-import model.team.Team;
+import model.Team;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
