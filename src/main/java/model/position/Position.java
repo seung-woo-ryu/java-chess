@@ -23,8 +23,11 @@ public class Position {
     public static Position unmodifiablePosition(Row row, Column column) {
         return new Position(row, column);
     }
-    public static Position copy(Position position) {
-        return new Position(position.getRow(), position.getColumn());
+
+    public static Position of(char rowString, char columnString) {
+        Row row = Row.nameOf(rowString);
+        Column column = Column.nameOf(columnString);
+        return new Position(row, column);
     }
 
     @Override

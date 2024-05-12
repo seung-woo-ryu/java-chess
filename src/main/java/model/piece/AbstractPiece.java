@@ -9,7 +9,6 @@ public abstract class AbstractPiece implements Piece{
     protected final String name;
     protected final int point;
     protected final Team team;
-
     protected Position position;
     protected ChessBoardWrapper chessBoardWrapper;
 
@@ -26,7 +25,8 @@ public abstract class AbstractPiece implements Piece{
     public String getName() {
         return this.name;
     }
-    public Team getTeam() {return this.team;}
+    public Team getTeam() { return this.team; }
+    public int getPoint() { return point; }
     public Position getPosition() {return this.position;}
     public boolean isSamePosition(Position position) {
         return this.position.equals(position);

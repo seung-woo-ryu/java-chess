@@ -3,6 +3,7 @@ package model.chessboard;
 import java.util.List;
 import java.util.Stack;
 import model.MoveHistory;
+import model.dto.StatusDto;
 import model.piece.AbstractPiece;
 import model.piece.PieceCollection;
 import model.position.Column;
@@ -64,15 +65,13 @@ public class ChessBoardWrapper {
         }
     }
     public void move(Position currentPosition, Position nextPosition) {
-        if (!pieceCollection.isNothingHere(currentPosition)) {
-            try {
-                AbstractPiece piece = pieceCollection.getPiece(currentPosition);
-                piece.move(nextPosition);
+        try {
+            AbstractPiece piece = pieceCollection.getPiece(currentPosition);
+            piece.move(nextPosition);
 
-                rollbackIfChecked(piece, currentPosition, nextPosition);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e.getMessage());
-            }
+            rollbackIfChecked(piece, currentPosition, nextPosition);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -107,6 +106,7 @@ public class ChessBoardWrapper {
                 final Position currentPosition = piece.getPosition();
                 piece.move(nextPosition);
                 if (!isChecked(team)) {
+                    undoMove(piece,currentPosition,nextPosition);
                     return false;
                 }
                 undoMove(piece,currentPosition,nextPosition);
@@ -137,5 +137,9 @@ public class ChessBoardWrapper {
 
     public void putHistory(Position position, Position nextPosition, AbstractPiece eliminatedPiece) {
         moveHistories.push(MoveHistory.getEliminatedHistory(position, nextPosition, eliminatedPiece));
+    }
+
+    public StatusDto getStatus() {
+        return pieceCollection.getStatus();
     }
 }

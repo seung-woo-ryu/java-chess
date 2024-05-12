@@ -27,4 +27,8 @@ public enum Team {
     public boolean isWhite() {
         return this.equals(WHITE);
     }
+
+    public Team changeTurn() {
+        return this.isWhite() ? BLACK : WHITE;
+    }
 }

@@ -25,6 +25,16 @@ public enum Column {
         return 1;
     }
 
+    public static Column nameOf(char columnChar) {
+        String columnString = String.valueOf(columnChar);
+        for (Column column : Column.values()) {
+            if (column.getName().equals(columnString)) {
+                return column;
+            }
+        }
+        throw new IllegalArgumentException("가능한 Column은 a ~ h입니다");
+    }
+
     public int getValue() {
         return value;
     }

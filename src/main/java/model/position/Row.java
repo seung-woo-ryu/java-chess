@@ -17,6 +17,15 @@ public enum Row {
         return value;
     }
 
+    public static Row nameOf(char value) {
+        String stringValue = String.valueOf(value);
+        for (Row row : Row.values()) {
+            if (row.getName().equals(stringValue)) {
+                return row;
+            }
+        }
+        throw new IllegalArgumentException("Row는 1~8만 가능합니다");
+    }
 
     public Row move(int step) {
         for (Row row : Row.values()) {

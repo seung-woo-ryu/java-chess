@@ -1,7 +1,11 @@
 package model.piece;
 
 import java.util.Optional;
+import jdk.jshell.Snippet.Status;
 import model.chessboard.ChessBoardWrapper;
+import model.dto.PieceInfoDto;
+import model.dto.StatusDetailDto;
+import model.dto.StatusDto;
 import model.position.Column;
 import model.position.GridPosition;
 import model.position.Position;
@@ -54,13 +58,13 @@ public class PieceCollection {
         Row majorStartRow = team.isWhite() ? Row.getWhiteMajorPieceStartRow() : Row.getBlackMajorPieceStartRow();
 
         pieceList.add(new Rook(team, gridPosition.getPosition(majorStartRow, Column.A), chessBoardWrapper));
-        pieceList.add(new Rook(team, gridPosition.getPosition(majorStartRow, Column.H), chessBoardWrapper));
         pieceList.add(new Knight(team, gridPosition.getPosition(majorStartRow, Column.B), chessBoardWrapper));
-        pieceList.add(new Knight(team, gridPosition.getPosition(majorStartRow, Column.G), chessBoardWrapper));
         pieceList.add(new Bishop(team, gridPosition.getPosition(majorStartRow, Column.C), chessBoardWrapper));
-        pieceList.add(new Bishop(team, gridPosition.getPosition(majorStartRow, Column.F), chessBoardWrapper));
         pieceList.add(new Queen(team, gridPosition.getPosition(majorStartRow, Column.D), chessBoardWrapper));
         pieceList.add(new King(team, gridPosition.getPosition(majorStartRow, Column.E), chessBoardWrapper));
+        pieceList.add(new Bishop(team, gridPosition.getPosition(majorStartRow, Column.F), chessBoardWrapper));
+        pieceList.add(new Knight(team, gridPosition.getPosition(majorStartRow, Column.G), chessBoardWrapper));
+        pieceList.add(new Rook(team, gridPosition.getPosition(majorStartRow, Column.H), chessBoardWrapper));
 
         addPawn(gridPosition, team, pieceList, chessBoardWrapper);
 
@@ -86,36 +90,54 @@ public class PieceCollection {
 
     public boolean isEnemyHere(Position nextPosition, Team currentTeam) {
         return pieceList.stream()
-            .filter(p -> p.getPosition().equals(nextPosition) && !p.isSameTeam(currentTeam))
-            .findAny()
-            .isPresent();
+            .anyMatch(p -> p.isSamePosition(nextPosition) && !p.isSameTeam(currentTeam));
     }
 
     public boolean isTeamHere(Position nextPosition, Team currentTeam) {
-        return pieceList.stream()
-            .filter(p -> p.getPosition().equals(nextPosition) && p.isSameTeam(currentTeam))
-            .findAny()
-            .isPresent();
+        return pieceList.stream().anyMatch(p -> p.isSamePosition(nextPosition) && p.isSameTeam(currentTeam));
     }
 
     public boolean isNothingHere(Position nextPosition) {
-        return pieceList.stream()
-            .filter(p -> p.getPosition().equals(nextPosition))
-            .findAny()
-            .isEmpty();
+        return pieceList.stream().noneMatch(p -> p.isSamePosition(nextPosition));
     }
 
     public Optional<Position> getKingPosition(Team team) {
         return this.pieceList.stream()
             .filter(piece -> piece.isKing() && piece.isSameTeam(team))
-            .findAny()
-            .map(piece -> Optional.of(piece.getPosition()))
-            .orElse(Optional.empty());
+            .map(piece -> piece.getPosition())
+            .findAny();
     }
 
     public List<AbstractPiece> findAllPieceWithSameTeam(Team team) {
         return pieceList.stream()
             .filter(piece -> piece.isSameTeam(team))
             .collect(Collectors.toList());
+    }
+
+    public StatusDto getStatus() {
+        List<StatusDetailDto> statusDetailDtoList = new ArrayList<>();
+
+        statusDetailDtoList.add(extracted(Team.WHITE));
+        statusDetailDtoList.add(extracted(Team.BLACK));
+
+        return new StatusDto(statusDetailDtoList);
+    }
+
+    private StatusDetailDto extracted(Team team) {
+        List<PieceInfoDto> collect = this.pieceList.stream()
+            .filter(piece -> piece.isSameTeam(team))
+            .filter(piece -> !piece.isKing())
+            .map(piece -> new PieceInfoDto(piece))
+            .collect(Collectors.toList());
+
+        int totalScore = getPoint(collect);
+
+        return new StatusDetailDto(team, totalScore, collect);
+    }
+
+    private int getPoint(List<PieceInfoDto> collect) {
+        return collect.stream()
+            .mapToInt(pieceInfoDto -> pieceInfoDto.getPoint())
+            .sum();
     }
 }
