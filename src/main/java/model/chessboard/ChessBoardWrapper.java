@@ -1,6 +1,5 @@
 package model.chessboard;
 
-import java.util.List;
 import java.util.Stack;
 import model.MoveHistory;
 import model.dto.StatusDto;
@@ -37,33 +36,25 @@ public class ChessBoardWrapper {
     public boolean isNothingHere(Position nextPosition) {
         return pieceCollection.isNothingHere(nextPosition);
     }
-
-    public AbstractPiece eliminateIfEnemyExist(Position nextPosition, Team team) {
-        if (isEnemyHere(nextPosition, team)) {
-            AbstractPiece eliminatedPiece = pieceCollection.getPiece(nextPosition);
-            pieceCollection.removePiece(eliminatedPiece);
-            return eliminatedPiece;
-        }
-        return NullPiece.getEmptyPiece();
-    }
-
     public GridPosition getGridPosition() {
         return gridPosition;
     }
-
-    public boolean isPossibleStep(Position position, int rowStep, int columnStep) {
-        // todo: 넘 별론데
-        try {
-            Row row = position.getRow();
-            Column column = position.getColumn();
-
-            row.move(rowStep);
-            column.move(columnStep);
-
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
+    public AbstractPiece eliminateIfEnemyExist(Position nextPosition, Team team) {
+        if (isEnemyHere(nextPosition, team)) {
+            return removePiece(nextPosition);
         }
+        return NullPiece.getEmptyPiece();
+    }
+    private AbstractPiece removePiece(Position nextPosition) {
+        AbstractPiece eliminatedPiece = pieceCollection.getPiece(nextPosition);
+        pieceCollection.removePiece(eliminatedPiece);
+        return eliminatedPiece;
+    }
+    public boolean isPossibleStep(Position position, int rowStep, int columnStep) {
+        final Row row = position.getRow();
+        final Column column = position.getColumn();
+
+        return row.isPossibleMove(rowStep) && column.isPossibleMove(columnStep);
     }
     public void move(Position currentPosition, Position nextPosition) {
         try {
@@ -76,7 +67,7 @@ public class ChessBoardWrapper {
         }
     }
     private void rollbackIfChecked(AbstractPiece abstractPiece, Position currentPosition) {
-        Team team = abstractPiece.getTeam();
+        final Team team = abstractPiece.getTeam();
 
         if (isChecked(team)) {
             undoMove(abstractPiece,currentPosition);
@@ -85,7 +76,7 @@ public class ChessBoardWrapper {
         }
     }
     private void undoMove(AbstractPiece piece, Position currentPosition) {
-        piece.forceMove(currentPosition);
+        piece.undoMove(currentPosition);
         restorePieceIfEliminated();
     }
 
@@ -98,45 +89,52 @@ public class ChessBoardWrapper {
         }
     }
 
-    // ToDo: Enhanced Loop안에서 원소 지우니깐 ConcurrentModificationException 발생
     public boolean isCheckmate(Team team) {
         for (AbstractPiece piece : pieceCollection.findAllPieceWithSameTeam(team)) {
-            for (Position nextPosition : piece.getAllNextPosition()) {
-                final Position currentPosition = piece.getPosition();
-                piece.move(nextPosition);
-                if (!isChecked(team)) {
-                    undoMove(piece,currentPosition);
-                    return false;
-                }
-                undoMove(piece,currentPosition);
+            if (isExistMoveOutOfCheckMate(team, piece)) {
+                return false;
             }
         }
         return true;
     }
+    private boolean isExistMoveOutOfCheckMate(Team team, AbstractPiece piece) {
+        for (Position nextPosition : piece.getAllNextPosition()) {
+            final Position currentPosition = piece.getPositionList();
+            piece.move(nextPosition);
+            if (!isChecked(team)) {
+                undoMove(piece,currentPosition);
+                return true;
+            }
+            undoMove(piece,currentPosition);
+        }
+        return false;
+    }
 
     public boolean isChecked(Team team) {
         Position kingPosition = findKingPosition(team);
-        // 반대 팀의 모든 가능한 포지션들을 찾는다.
-        List<Position> allPossiblePosition = pieceCollection.findAllPossiblePosition(team.getOpposite());
 
-        for (Position position : allPossiblePosition) {
-            if (position.equals(kingPosition)) {
-                return true;
-            }
+        if (isExistPiecePossibleCheck(team, kingPosition)) {
+            return true;
         }
 
         return false;
     }
 
+    private boolean isExistPiecePossibleCheck(Team team, Position kingPosition) {
+        for (Position position : pieceCollection.findAllPossiblePosition(team.getOpposite())) {
+            if (position.equals(kingPosition)) {
+                return true;
+            }
+        }
+        return false;
+    }
     private Position findKingPosition(Team team) {
         return pieceCollection.getKingPosition(team)
             .orElseThrow(()->new IllegalArgumentException("진행중인 게임에는 킹이 존재해야합니다"));
     }
-
     public void putHistory(Position position, Position nextPosition, AbstractPiece eliminatedPiece) {
         moveHistories.push(MoveHistory.getEliminatedHistory(position, nextPosition, eliminatedPiece));
     }
-
     public StatusDto getStatus() {
         return pieceCollection.getStatus();
     }

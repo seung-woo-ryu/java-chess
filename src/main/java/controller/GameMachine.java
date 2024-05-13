@@ -74,19 +74,22 @@ public class GameMachine {
 
         if (START.equals(command)) {
             state.start();
+            return;
         }
-        else if (command!= null && command.startsWith(MOVE)) {
+        if (command!= null && command.startsWith(MOVE)) {
             state.move(command);
+            return;
         }
-        else if (STATUS.equals(command)) {
+        if (STATUS.equals(command)) {
             state.status();
+            return;
         }
-        else if (END.equals(command)) {
+        if (END.equals(command)) {
             state.end();
+            return;
         }
-        else {
-            throw new IllegalArgumentException("가능한 명령이 아닙니다!");
-        }
+
+        throw new IllegalArgumentException("가능한 명령이 아닙니다!");
     }
     public void start() {
         this.state = startState;

@@ -1,7 +1,6 @@
 package model.piece;
 
 import java.util.Optional;
-import jdk.jshell.Snippet.Status;
 import model.chessboard.ChessBoardWrapper;
 import model.dto.PieceInfoDto;
 import model.dto.StatusDetailDto;
@@ -105,7 +104,7 @@ public class PieceCollection {
     public Optional<Position> getKingPosition(Team team) {
         return this.pieceList.stream()
             .filter(piece -> piece.isKing() && piece.isSameTeam(team))
-            .map(piece -> piece.getPosition())
+            .map(piece -> piece.getPositionList())
             .findAny();
     }
 

@@ -19,6 +19,12 @@ public class Position {
         this.row = row;
         this.column = column;
     }
+    public Position getNextPosition(int rowStep, int columnStep) {
+        final Row row = this.row.move(rowStep);
+        final Column column = this.column.move(columnStep);
+
+        return new Position(row, column);
+    }
 
     public static Position of(Row row, Column column) {
         return new Position(row, column);

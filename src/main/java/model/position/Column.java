@@ -52,4 +52,7 @@ public enum Column {
 
         throw new IllegalArgumentException("가능한 Column(1~8)에서 벗어났습니다");
     }
+    public boolean isPossibleMove(int step) {
+        return (Column.A.value <= this.value + step) && (this.value + step <= Column.H.value);
+    }
 }

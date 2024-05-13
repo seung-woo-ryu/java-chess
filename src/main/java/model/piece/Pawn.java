@@ -28,10 +28,10 @@ public class Pawn extends AbstractPiece {
 
         // 2칸 전진
         if(isFirstMove()){
-            moveForwardSpace(gridPosition, positionList, twoStep);
+            moveForwardSpace(positionList, twoStep);
         }
         // 1칸 전진
-        moveForwardSpace(gridPosition, positionList, oneStep);
+        moveForwardSpace(positionList, oneStep);
         // 대각선 이동
         moveDiagonallyOneSpaceIfEnemyExist(gridPosition, positionList, Column.getLeftDirection());
         moveDiagonallyOneSpaceIfEnemyExist(gridPosition, positionList, Column.getRightDirection());
@@ -40,24 +40,20 @@ public class Pawn extends AbstractPiece {
 
     private void moveDiagonallyOneSpaceIfEnemyExist(GridPosition gridPosition, List<Position> positionList, int columnStep) {
         int rowStep = this.team.getDirection();
-        Row currentRow = this.position.getRow();
-        Column currentColumn = this.position.getColumn();
 
         if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
-            Position diagonalMove = gridPosition.getPosition(currentRow.move(rowStep), currentColumn.move(columnStep));
+            Position diagonalMove = this.position.getNextPosition(rowStep, columnStep);
             if (chessBoardWrapper.isEnemyHere(diagonalMove, this.team)) {
                 positionList.add(diagonalMove);
             }
         }
     }
 
-    private void moveForwardSpace(GridPosition gridPosition, List<Position> positionList,int rowStep) {
+    private void moveForwardSpace(List<Position> positionList,int rowStep) {
         int columnStep = 0;
-        Row currentRow = this.position.getRow();
-        Column currentColumn = this.position.getColumn();
 
         if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
-            Position nextPosition = gridPosition.getPosition(currentRow.move(rowStep), currentColumn);
+            Position nextPosition = this.position.getNextPosition(rowStep, columnStep);
             if (chessBoardWrapper.isNothingHere(nextPosition)) {
                 positionList.add(nextPosition);
             }

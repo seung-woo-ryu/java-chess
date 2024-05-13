@@ -4,14 +4,13 @@ import controller.GameMachine;
 import model.position.Position;
 
 public class StartState implements State{
-
+    private static final String ALREADY_START = "이미 시작했습니다!";
     private final GameMachine gameMachine;
 
     public StartState(GameMachine gameMachine) {
         this.gameMachine = gameMachine;
     }
 
-    private static final String ALREADY_START = "이미 시작했습니다!";
     @Override
     public void move(String command) {
         String[] split = command.split(" ");

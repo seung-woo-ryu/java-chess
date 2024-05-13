@@ -36,6 +36,9 @@ public enum Row {
 
         throw new IllegalArgumentException("가능한 Row(1~8)에서 벗어났습니다");
     }
+    public boolean isPossibleMove(int step) {
+        return (Row.ONE.value <= this.value + step) && (this.value + step <= Row.EIGHT.value);
+    }
 
     public String getName() {
         return name;
