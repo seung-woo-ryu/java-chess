@@ -26,7 +26,7 @@ public class Knight extends AbstractPiece{
     }
     @Override
     public List<Position> getAllNextPosition() {
-        return getPositionList(possibleMove);
+        return getPosition(possibleMove);
     }
     @Override
     public boolean isKing() {

@@ -25,7 +25,7 @@ public class King extends AbstractPiece{
     }
     @Override
     public List<Position> getAllNextPosition() {
-        return getPositionList(possibleMove);
+        return getPosition(possibleMove);
     }
     @Override
     public boolean isKing() {

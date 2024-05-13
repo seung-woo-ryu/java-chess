@@ -41,7 +41,7 @@ public abstract class AbstractPiece implements Piece{
     public int getPoint() {
         return point;
     }
-    public Position getPositionList() {
+    public Position getPosition() {
         return this.position;
     }
     public boolean isSamePosition(Position position) {
@@ -52,8 +52,8 @@ public abstract class AbstractPiece implements Piece{
     }
     @Override
     public void move(Position nextPosition) {
-        for (Position canPosition : getAllNextPosition()) {
-            if (nextPosition.equals(canPosition)) {
+        for (Position possiblePosition : getAllNextPosition()) {
+            if (nextPosition.equals(possiblePosition)) {
                 AbstractPiece eliminatedPiece = chessBoardWrapper.eliminateIfEnemyExist(nextPosition, team);
                 chessBoardWrapper.putHistory(this.position, nextPosition, eliminatedPiece);
                 this.position = nextPosition;
@@ -118,7 +118,7 @@ public abstract class AbstractPiece implements Piece{
         return possiblePosition;
     }
 
-    protected List<Position> getPositionList(int[][] possibleMove) {
+    protected List<Position> getPosition(int[][] possibleMove) {
         List<Position> possiblePosition = new ArrayList<>();
 
         for (int[] move : possibleMove) {

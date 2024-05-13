@@ -99,7 +99,7 @@ public class ChessBoardWrapper {
     }
     private boolean isExistMoveOutOfCheckMate(Team team, AbstractPiece piece) {
         for (Position nextPosition : piece.getAllNextPosition()) {
-            final Position currentPosition = piece.getPositionList();
+            final Position currentPosition = piece.getPosition();
             piece.move(nextPosition);
             if (!isChecked(team)) {
                 undoMove(piece,currentPosition);
@@ -121,7 +121,9 @@ public class ChessBoardWrapper {
     }
 
     private boolean isExistPiecePossibleCheck(Team team, Position kingPosition) {
-        for (Position position : pieceCollection.findAllPossiblePosition(team.getOpposite())) {
+        final Team opposite = team.getOpposite();
+
+        for (Position position : pieceCollection.findAllPossiblePosition(opposite)) {
             if (position.equals(kingPosition)) {
                 return true;
             }
@@ -133,7 +135,7 @@ public class ChessBoardWrapper {
             .orElseThrow(()->new IllegalArgumentException("진행중인 게임에는 킹이 존재해야합니다"));
     }
     public void putHistory(Position position, Position nextPosition, AbstractPiece eliminatedPiece) {
-        moveHistories.push(MoveHistory.getEliminatedHistory(position, nextPosition, eliminatedPiece));
+        moveHistories.push(MoveHistory.of(position, nextPosition, eliminatedPiece));
     }
     public StatusDto getStatus() {
         return pieceCollection.getStatus();

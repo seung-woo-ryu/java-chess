@@ -104,7 +104,7 @@ public class PieceCollection {
     public Optional<Position> getKingPosition(Team team) {
         return this.pieceList.stream()
             .filter(piece -> piece.isKing() && piece.isSameTeam(team))
-            .map(piece -> piece.getPositionList())
+            .map(piece -> piece.getPosition())
             .findAny();
     }
 

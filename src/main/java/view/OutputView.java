@@ -35,7 +35,9 @@ public class OutputView {
     }
 
     public void printCheck() {
+        System.out.println();
         System.out.println(CHECK);
+        System.out.println();
     }
     public void printInit() {
         System.out.println();
