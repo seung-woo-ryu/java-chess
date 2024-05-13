@@ -1,4 +1,4 @@
-package model.state;
+package state;
 
 import controller.GameMachine;
 import model.position.Position;

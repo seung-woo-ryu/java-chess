@@ -1,10 +1,10 @@
 package model.piece;
 
 import java.util.Optional;
-import model.chessboard.ChessBoardWrapper;
-import model.dto.PieceInfoDto;
-import model.dto.StatusDetailDto;
-import model.dto.StatusDto;
+import controller.ChessBoardWrapper;
+import dto.PieceInfoDto;
+import dto.StatusDetailDto;
+import dto.StatusDto;
 import model.position.Column;
 import model.position.GridPosition;
 import model.position.Position;

@@ -1,10 +1,9 @@
 package model.piece;
 
-import model.chessboard.ChessBoardWrapper;
+import controller.ChessBoardWrapper;
 import model.position.Column;
 import model.position.GridPosition;
 import model.position.Position;
-import model.position.Row;
 import model.Team;
 import java.util.ArrayList;
 import java.util.List;

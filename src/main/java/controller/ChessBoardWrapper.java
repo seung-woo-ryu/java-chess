@@ -1,8 +1,8 @@
-package model.chessboard;
+package controller;
 
 import java.util.Stack;
 import model.MoveHistory;
-import model.dto.StatusDto;
+import dto.StatusDto;
 import model.piece.AbstractPiece;
 import model.piece.NullPiece;
 import model.piece.PieceCollection;

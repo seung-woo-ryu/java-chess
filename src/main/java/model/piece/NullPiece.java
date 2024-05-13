@@ -2,7 +2,6 @@ package model.piece;
 
 import java.util.Collections;
 import java.util.List;
-import model.chessboard.ChessBoardWrapper;
 import model.position.Position;
 import model.Team;
 

@@ -1,6 +1,4 @@
-package model.state;
-
-import model.chessboard.ChessBoardWrapper;
+package state;
 
 public interface State {
     void move(String command);

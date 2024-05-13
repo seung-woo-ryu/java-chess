@@ -1,4 +1,4 @@
-package model.state;
+package state;
 
 public class EndState implements State{
 

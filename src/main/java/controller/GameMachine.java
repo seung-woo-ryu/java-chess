@@ -6,14 +6,13 @@ import static constants.Constants.START;
 import static constants.Constants.STATUS;
 
 import model.Team;
-import model.chessboard.ChessBoardWrapper;
-import model.dto.StatusDto;
+import dto.StatusDto;
 import model.piece.AbstractPiece;
 import model.position.Position;
-import model.state.EndState;
-import model.state.NotStartState;
-import model.state.StartState;
-import model.state.State;
+import state.EndState;
+import state.NotStartState;
+import state.StartState;
+import state.State;
 import validator.Validator;
 import view.InputView;
 import view.OutputView;
@@ -21,16 +20,14 @@ import view.OutputView;
 public class GameMachine {
 
     private final InputView inputView;
-    private final OutputView outputView;
     private final State startState;
     private final State notStartState;
     private final State endState;
     private State state;
     private Team turn;
     private ChessBoardWrapper chessBoardWrapper;
-    public GameMachine(InputView inputView, OutputView outputView) {
+    public GameMachine(InputView inputView) {
         this.inputView = inputView;
-        this.outputView = outputView;
 
         this.startState = new StartState(this);
         this.notStartState = new NotStartState(this);
@@ -50,21 +47,21 @@ public class GameMachine {
             runInternal();
         } while(!state.isEnd() && !isCheckmate());
 
-        outputView.printEnd();
+        OutputView.printEnd();
     }
 
     private void runInternal() {
         try{
-            outputView.printChessBoard(chessBoardWrapper);
+            OutputView.printChessBoard(chessBoardWrapper);
             operate();
         } catch (IllegalArgumentException e){
-            outputView.printError(e);
+            OutputView.printError(e);
         }
     }
 
     private boolean isCheckmate() {
         if (chessBoardWrapper != null && chessBoardWrapper.isCheckmate(turn)) {
-            outputView.printCheckMate();
+            OutputView.printCheckMate();
             return true;
         }
 
@@ -89,7 +86,7 @@ public class GameMachine {
     }
     public void start() {
         this.state = startState;
-        outputView.printInit();
+        OutputView.printInit();
     }
     public void move(Position fromPosition, Position toPosition) {
         AbstractPiece piece = chessBoardWrapper.getPiece(fromPosition);
@@ -106,13 +103,13 @@ public class GameMachine {
 
     private void printCheckIfChecked() {
         if (chessBoardWrapper.isChecked(turn)) {
-            outputView.printCheck();
+            OutputView.printCheck();
         }
     }
 
     public void status() {
         StatusDto statusDto = chessBoardWrapper.getStatus();
-        outputView.printStatus(statusDto);
+        OutputView.printStatus(statusDto);
     }
     public void end() {
         this.state = endState;

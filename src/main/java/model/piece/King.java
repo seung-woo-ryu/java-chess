@@ -1,6 +1,6 @@
 package model.piece;
 
-import model.chessboard.ChessBoardWrapper;
+import controller.ChessBoardWrapper;
 import model.position.Position;
 import model.Team;
 import java.util.List;
