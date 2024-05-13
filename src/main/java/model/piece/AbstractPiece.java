@@ -64,21 +64,27 @@ public abstract class AbstractPiece implements Piece{
 
         throw new IllegalArgumentException("이동 할 수 없는 위치입니다.");
     }
-
+    public void undoMove(Position currentPosition) {
+        this.position = currentPosition;
+        decreaseCnt();
+    }
     protected void addPossiblePositionRepeatedly(int[] direction, List<Position> possiblePosition) {
         final int rowStep = direction[0];
         final int columnStep = direction[1];
 
         Position currentPosition = this.position;
         do {
+            // 체스 보드 좌표 안에서 움직이는 수인지 체크
             if (!chessBoardWrapper.isPossibleStep(currentPosition, rowStep, columnStep)) {
                 break;
             }
             Position nextPosition = currentPosition.getNextPosition(rowStep, columnStep);
+            // 우리 기물이 존재하는 위치인지 확인
             if (chessBoardWrapper.isTeamHere(nextPosition, this.team)) {
                 break;
             }
             possiblePosition.add(nextPosition);
+            // 적 기물이 존재하면 중단
             if (chessBoardWrapper.isEnemyHere(nextPosition, this.team)) {
                 break;
             }
@@ -101,11 +107,6 @@ public abstract class AbstractPiece implements Piece{
             return;
         }
         possiblePosition.add(nextPosition);
-    }
-
-    public void undoMove(Position currentPosition) {
-        this.position = currentPosition;
-        decreaseCnt();
     }
 
     protected List<Position> getPositionListRepeatedly(int[][] directions) {

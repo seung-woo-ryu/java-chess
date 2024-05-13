@@ -1,5 +1,10 @@
 package controller;
 
+import static constants.Constants.END;
+import static constants.Constants.MOVE;
+import static constants.Constants.START;
+import static constants.Constants.STATUS;
+
 import model.Team;
 import model.chessboard.ChessBoardWrapper;
 import model.dto.StatusDto;
@@ -9,6 +14,7 @@ import model.state.EndState;
 import model.state.NotStartState;
 import model.state.StartState;
 import model.state.State;
+import validator.Validator;
 import view.InputView;
 import view.OutputView;
 
@@ -16,10 +22,6 @@ public class GameMachine {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private static final String START = "start";
-    private static final String STATUS = "status";
-    private static final String MOVE = "move";
-    private static final String END = "end";
     private final State startState;
     private final State notStartState;
     private final State endState;
@@ -32,7 +34,7 @@ public class GameMachine {
 
         this.startState = new StartState(this);
         this.notStartState = new NotStartState(this);
-        this.endState = new EndState(this);
+        this.endState = new EndState();
         this.state = this.notStartState;
 
         this.turn = Team.WHITE;
@@ -74,29 +76,25 @@ public class GameMachine {
 
         if (START.equals(command)) {
             state.start();
-            return;
         }
         if (command!= null && command.startsWith(MOVE)) {
             state.move(command);
-            return;
         }
         if (STATUS.equals(command)) {
             state.status();
-            return;
         }
         if (END.equals(command)) {
             state.end();
-            return;
         }
-
-        throw new IllegalArgumentException("가능한 명령이 아닙니다!");
     }
     public void start() {
         this.state = startState;
         outputView.printInit();
     }
     public void move(Position fromPosition, Position toPosition) {
-        validateTurnIsRight(fromPosition);
+        AbstractPiece piece = chessBoardWrapper.getPiece(fromPosition);
+        Validator.validateTurnRight(piece, this.turn);
+
         doMoveAndChangeTurn(fromPosition, toPosition);
         printCheckIfChecked();
     }
@@ -116,21 +114,10 @@ public class GameMachine {
         StatusDto statusDto = chessBoardWrapper.getStatus();
         outputView.printStatus(statusDto);
     }
-
     public void end() {
         this.state = endState;
     }
-    private void validateTurnIsRight(Position fromPosition) {
-        if (!isSameTeam(fromPosition)) {
-            throw new IllegalArgumentException(String.format("잘못된 명령입니다. 현재 %s이 움직일 차례입니다.", this.turn));
-        }
-    }
-    private boolean isSameTeam(Position fromPosition) {
-        AbstractPiece piece = chessBoardWrapper.getPiece(fromPosition);
-        return piece.isSameTeam(this.turn);
-    }
-
-    public boolean isNotStartedState() {
+    public boolean isNotStartState() {
         return this.state.equals(this.notStartState);
     }
 }

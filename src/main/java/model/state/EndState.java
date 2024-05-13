@@ -1,14 +1,10 @@
 package model.state;
 
-import controller.GameMachine;
-
 public class EndState implements State{
 
     private static final String GAME_OVER = "게임이 종료된 상태입니다";
-    private final GameMachine gameMachine;
 
-    public EndState(GameMachine gameMachine) {
-        this.gameMachine = gameMachine;
+    public EndState() {
     }
 
     @Override

@@ -10,7 +10,6 @@ import model.position.Row;
 public class OutputView {
 
     private static final String INIT_CHESSBOARD = "체스판이 초기화 되었습니다.";
-    private static final String WRONG_COMMAND = "잘못된 이동 명령입니다!";
     private static final String CHECK = "체크!";
     private static final String CHECKMATE = "체크메이트!";
     private static final String END = "게임을 종료합니다.";
@@ -35,37 +34,32 @@ public class OutputView {
     }
 
     public void printCheck() {
-        System.out.println();
-        System.out.println(CHECK);
-        System.out.println();
+        printString(CHECK);
     }
     public void printInit() {
-        System.out.println();
-        System.out.println(INIT_CHESSBOARD);
-        System.out.println();
+        printString(INIT_CHESSBOARD);
     }
 
     public void printError(Exception e) {
-        System.out.println();
-        System.out.println(e.getMessage());
-        System.out.println();
+        printString(e.getMessage());
     }
 
     public void printStatus(StatusDto status) {
-        System.out.println();
-        System.out.println(status);
-        System.out.println();
+        printString(status.toString());
     }
 
     public void printCheckMate() {
-        System.out.println();
-        System.out.println(CHECKMATE);
-        System.out.println();
+        printString(CHECKMATE);
     }
 
     public void printEnd() {
+        printString(END);
+    }
+
+    private static void printString(String message) {
         System.out.println();
-        System.out.println(END);
+        System.out.println(message);
         System.out.println();
     }
+
 }

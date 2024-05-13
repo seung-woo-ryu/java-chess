@@ -12,14 +12,6 @@ public class MoveHistory {
     private final boolean isEliminated;
     private final AbstractPiece eliminatedPiece;
 
-    public Position getFromPosition() {
-        return fromPosition;
-    }
-
-    public Position getToPosition() {
-        return toPosition;
-    }
-
     public boolean isEliminated() {
         return isEliminated;
     }

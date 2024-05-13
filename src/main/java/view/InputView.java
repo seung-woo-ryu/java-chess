@@ -3,9 +3,7 @@ package view;
 
 import java.util.Scanner;
 import controller.GameMachine;
-import model.Team;
-import model.state.NotStartState;
-import model.state.State;
+import validator.Validator;
 
 public class InputView {
     private final Scanner scanner;
@@ -23,7 +21,7 @@ public class InputView {
     }
 
     public String inputCommand(GameMachine gameMachine) {
-        if (gameMachine.isNotStartedState()) {
+        if (gameMachine.isNotStartState()) {
             System.out.println(START);
             String command = scanner.nextLine();
             return getOnlyStart(command);
@@ -31,13 +29,13 @@ public class InputView {
 
         System.out.println(String.format(INPUT_COMMAND, gameMachine.getTurn()));
         String command = scanner.nextLine();
+        Validator.validatePossibleCommand(command);
         return command;
     }
 
     private String getOnlyStart(String command) {
-        if ("start".equals(command)) {
-            return command;
-        }
-        throw new IllegalArgumentException("start만 가능합니다");
+        Validator.validateCommandOnlyStartPossible(command);
+
+        return command.trim();
     }
 }
