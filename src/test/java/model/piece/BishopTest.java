@@ -14,11 +14,11 @@ class BishopTest extends AbstractTest{
     @DisplayName("기물이 막지 않는 위치까지 이동 가능")
     void 이동_가능_01() {
         // given
-        Position pawn2B = Position.unmodifiablePosition(Row.TWO, Column.B);
-        Position pawn3B = Position.unmodifiablePosition(Row.THREE, Column.B);
+        Position pawn2B = Position.of(Row.TWO, Column.B);
+        Position pawn3B = Position.of(Row.THREE, Column.B);
 
-        Position bishop1C = Position.unmodifiablePosition(Row.ONE, Column.C);
-        Position bishop2B = Position.unmodifiablePosition(Row.TWO, Column.B);
+        Position bishop1C = Position.of(Row.ONE, Column.C);
+        Position bishop2B = Position.of(Row.TWO, Column.B);
 
         chessBoardWrapper.move(pawn2B, pawn3B);
         // when & then
@@ -31,14 +31,14 @@ class BishopTest extends AbstractTest{
     void 이동_가능_02() {
         // given
         // black
-        Position pawn7H = Position.unmodifiablePosition(Row.SEVEN, Column.H);
-        Position pawn6H = Position.unmodifiablePosition(Row.SIX, Column.H);
+        Position pawn7H = Position.of(Row.SEVEN, Column.H);
+        Position pawn6H = Position.of(Row.SIX, Column.H);
         // white
-        Position pawn2D = Position.unmodifiablePosition(Row.TWO, Column.D);
-        Position pawn3D = Position.unmodifiablePosition(Row.THREE, Column.D);
+        Position pawn2D = Position.of(Row.TWO, Column.D);
+        Position pawn3D = Position.of(Row.THREE, Column.D);
         // white
-        Position bishop1C = Position.unmodifiablePosition(Row.ONE, Column.C);
-        Position bishop6H = Position.unmodifiablePosition(Row.SIX, Column.H);
+        Position bishop1C = Position.of(Row.ONE, Column.C);
+        Position bishop6H = Position.of(Row.SIX, Column.H);
 
         chessBoardWrapper.move(pawn7H, pawn6H);
         chessBoardWrapper.move(pawn2D, pawn3D);
@@ -52,8 +52,8 @@ class BishopTest extends AbstractTest{
     void 이동_불가능_01() {
         // given
         // white
-        Position bishop1C = Position.unmodifiablePosition(Row.ONE, Column.C);
-        Position bishop6H = Position.unmodifiablePosition(Row.SIX, Column.H);
+        Position bishop1C = Position.of(Row.ONE, Column.C);
+        Position bishop6H = Position.of(Row.SIX, Column.H);
 
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
@@ -65,8 +65,8 @@ class BishopTest extends AbstractTest{
     void 이동_불가능_02() {
         // given
         // white
-        Position bishop1C = Position.unmodifiablePosition(Row.ONE, Column.C);
-        Position bishop2C = Position.unmodifiablePosition(Row.TWO, Column.C);
+        Position bishop1C = Position.of(Row.ONE, Column.C);
+        Position bishop2C = Position.of(Row.TWO, Column.C);
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
             chessBoardWrapper.move(bishop1C, bishop2C));

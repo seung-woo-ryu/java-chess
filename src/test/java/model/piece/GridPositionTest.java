@@ -20,7 +20,7 @@ class GridPositionTest {
 
         // when && then
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            grid.add(Position.unmodifiablePosition(Row.EIGHT, Column.C));
+            grid.add(Position.of(Row.EIGHT, Column.C));
         });
     }
 

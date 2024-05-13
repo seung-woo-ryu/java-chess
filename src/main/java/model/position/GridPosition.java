@@ -15,7 +15,7 @@ public class GridPosition {
 
         for (Row row : Row.values()) {
             for (Column column : Column.values()) {
-                grid.add(Position.unmodifiablePosition(row, column));
+                grid.add(Position.of(row, column));
             }
         }
 

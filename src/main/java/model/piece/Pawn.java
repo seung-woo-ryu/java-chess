@@ -40,10 +40,10 @@ public class Pawn extends AbstractPiece {
 
     private void moveDiagonallyOneSpaceIfEnemyExist(GridPosition gridPosition, List<Position> positionList, int columnStep) {
         int rowStep = this.team.getDirection();
-        Row currentRow = super.getPosition().getRow();
-        Column currentColumn = super.getPosition().getColumn();
+        Row currentRow = this.position.getRow();
+        Column currentColumn = this.position.getColumn();
 
-        if (chessBoardWrapper.isChessBoardIn(super.getPosition(), rowStep, columnStep)) {
+        if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
             Position diagonalMove = gridPosition.getPosition(currentRow.move(rowStep), currentColumn.move(columnStep));
             if (chessBoardWrapper.isEnemyHere(diagonalMove, this.team)) {
                 positionList.add(diagonalMove);
@@ -53,10 +53,10 @@ public class Pawn extends AbstractPiece {
 
     private void moveForwardSpace(GridPosition gridPosition, List<Position> positionList,int rowStep) {
         int columnStep = 0;
-        Row currentRow = super.getPosition().getRow();
-        Column currentColumn = super.getPosition().getColumn();
+        Row currentRow = this.position.getRow();
+        Column currentColumn = this.position.getColumn();
 
-        if (chessBoardWrapper.isChessBoardIn(super.getPosition(), rowStep, columnStep)) {
+        if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
             Position nextPosition = gridPosition.getPosition(currentRow.move(rowStep), currentColumn);
             if (chessBoardWrapper.isNothingHere(nextPosition)) {
                 positionList.add(nextPosition);
@@ -68,10 +68,14 @@ public class Pawn extends AbstractPiece {
         final int firstRow = this.team.isWhite() ?
             whiteFirstRow : blackFirstRow;
 
-        return super.getPosition().isSameRow(firstRow);
+        return this.position.isSameRow(firstRow);
     }
     @Override
     public boolean isKing() {
+        return false;
+    }
+    @Override
+    public boolean isNullPiece() {
         return false;
     }
 }

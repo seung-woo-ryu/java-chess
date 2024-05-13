@@ -22,7 +22,7 @@ public class OutputView {
                 StringBuilder sb = new StringBuilder();
                 sb.append(col--);
                 for (Column column : Column.values()) {
-                    Position position = Position.unmodifiablePosition(row, column);
+                    Position position = Position.of(row, column);
                     AbstractPiece piece = chessBoardWrapper.getPiece(position);
                     String name = piece.isWhite() ? piece.getName() : piece.getName().toUpperCase();
                     sb.append("|").append(name);

@@ -15,18 +15,17 @@ class ChessBoardWrapperTest extends AbstractTest {
     @DisplayName("다음 수가 체크 상태를 유발하면 Exception 발생")
     void 체크_상태_판단_기능() {
         // given
-        Position blackPawn7E = Position.unmodifiablePosition(Row.SEVEN, Column.E);
-        Position blackPawn6E = Position.unmodifiablePosition(Row.SIX, Column.E);
+        Position blackPawn7E = Position.of(Row.SEVEN, Column.E);
+        Position blackPawn6E = Position.of(Row.SIX, Column.E);
 
-        Position blackBishop8F = Position.unmodifiablePosition(Row.EIGHT, Column.F);
-        Position blackBishop4B = Position.unmodifiablePosition(Row.FOUR, Column.B);
+        Position blackBishop8F = Position.of(Row.EIGHT, Column.F);
+        Position blackBishop4B = Position.of(Row.FOUR, Column.B);
 
-        Position whitePawn2D = Position.unmodifiablePosition(Row.TWO, Column.D);
-        Position whitePawn3D = Position.unmodifiablePosition(Row.THREE, Column.D);
+        Position whitePawn2D = Position.of(Row.TWO, Column.D);
+        Position whitePawn3D = Position.of(Row.THREE, Column.D);
         // when
         chessBoardWrapper.move(blackPawn7E, blackPawn6E);
         chessBoardWrapper.move(blackBishop8F, blackBishop4B);
-        chessBoardWrapper.move(blackPawn7E, blackPawn6E);
         // then
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             chessBoardWrapper.move(whitePawn2D, whitePawn3D);
@@ -37,17 +36,17 @@ class ChessBoardWrapperTest extends AbstractTest {
     @DisplayName("내가 둘 수 있는 모든 수가 체크 상태를 유발하면 Exception 발생")
     void 체크메이트_상태_판단() {
         // given
-        Position blackPawn7E = Position.unmodifiablePosition(Row.SEVEN, Column.E);
-        Position blackPawn5E = Position.unmodifiablePosition(Row.FIVE, Column.E);
+        Position blackPawn7E = Position.of(Row.SEVEN, Column.E);
+        Position blackPawn5E = Position.of(Row.FIVE, Column.E);
 
-        Position whitePawn2F = Position.unmodifiablePosition(Row.TWO, Column.F);
-        Position whitePawn3F = Position.unmodifiablePosition(Row.THREE, Column.F);
+        Position whitePawn2F = Position.of(Row.TWO, Column.F);
+        Position whitePawn3F = Position.of(Row.THREE, Column.F);
 
-        Position whitePawn2G = Position.unmodifiablePosition(Row.TWO, Column.G);
-        Position whitePawn4G = Position.unmodifiablePosition(Row.FOUR, Column.G);
+        Position whitePawn2G = Position.of(Row.TWO, Column.G);
+        Position whitePawn4G = Position.of(Row.FOUR, Column.G);
 
-        Position blackQueen8D = Position.unmodifiablePosition(Row.EIGHT, Column.D);
-        Position blackQueen4H = Position.unmodifiablePosition(Row.FOUR, Column.H);
+        Position blackQueen8D = Position.of(Row.EIGHT, Column.D);
+        Position blackQueen4H = Position.of(Row.FOUR, Column.H);
         // when
         chessBoardWrapper.move(blackPawn7E, blackPawn5E);
         chessBoardWrapper.move(whitePawn2F, whitePawn3F);

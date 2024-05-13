@@ -30,7 +30,7 @@ public class StartState implements State{
 
     @Override
     public void status() {
-        gameMachine.printStatus();
+        gameMachine.status();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StartState implements State{
 
     @Override
     public void end() {
-        gameMachine.endGame();
+        gameMachine.end();
     }
 
     @Override

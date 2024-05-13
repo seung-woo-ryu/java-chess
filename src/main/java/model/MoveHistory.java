@@ -31,7 +31,7 @@ public class MoveHistory {
     public MoveHistory(Position fromPosition, Position toPosition, AbstractPiece eliminatedPiece) {
         this.fromPosition = fromPosition;
         this.toPosition = toPosition;
-        this.isEliminated = eliminatedPiece != null;
+        this.isEliminated = eliminatedPiece.isNullPiece() ;
         this.eliminatedPiece = eliminatedPiece;
     }
 

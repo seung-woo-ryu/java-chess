@@ -20,6 +20,11 @@ public class Bishop extends AbstractPiece{
     }
 
     @Override
+    public boolean isNullPiece() {
+        return false;
+    }
+
+    @Override
     public List<Position> getAllNextPosition() {
         List<Position> possiblePosition = new ArrayList<>();
 
@@ -34,18 +39,21 @@ public class Bishop extends AbstractPiece{
         Row row = this.position.getRow();
         Column column = this.position.getColumn();
         do {
-            if (!chessBoardWrapper.isChessBoardIn(Position.unmodifiablePosition(row,column), direction[0], direction[1])) {
+            if (!chessBoardWrapper.isPossibleStep(Position.of(row,column), direction[0], direction[1])) {
                 break;
             }
 
             row = row.move(direction[0]);
             column = column.move(direction[1]);
 
-            Position nextPosition = Position.unmodifiablePosition(row, column);
+            Position nextPosition = Position.of(row, column);
             if (chessBoardWrapper.isTeamHere(nextPosition, this.team)) {
                 break;
             }
             possiblePosition.add(nextPosition);
+            if (chessBoardWrapper.isEnemyHere(nextPosition, this.team)) {
+                break;
+            }
         } while (true);
     }
 

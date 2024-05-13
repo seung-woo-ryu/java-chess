@@ -2,6 +2,7 @@ package model.piece;
 
 import java.util.Collections;
 import java.util.List;
+import model.chessboard.ChessBoardWrapper;
 import model.position.Position;
 import model.Team;
 
@@ -10,7 +11,7 @@ public class NullPiece extends AbstractPiece {
     private static NullPiece nullPiece;
 
     public NullPiece() {
-        super(" ", 0, Team.NOTHING, null, null);
+        super(" ", 0, Team.NOTHING, Position.nullPosition(), null);
     }
 
     @Override
@@ -29,5 +30,9 @@ public class NullPiece extends AbstractPiece {
     @Override
     public boolean isKing() {
         return false;
+    }
+    @Override
+    public boolean isNullPiece() {
+        return true;
     }
 }

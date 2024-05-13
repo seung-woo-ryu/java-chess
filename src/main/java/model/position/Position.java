@@ -20,7 +20,7 @@ public class Position {
         this.column = column;
     }
 
-    public static Position unmodifiablePosition(Row row, Column column) {
+    public static Position of(Row row, Column column) {
         return new Position(row, column);
     }
 
@@ -28,6 +28,14 @@ public class Position {
         Row row = Row.nameOf(rowString);
         Column column = Column.nameOf(columnString);
         return new Position(row, column);
+    }
+
+    public static Position nullPosition() {
+        return new Position(null, null);
+    }
+
+    public boolean isNullPosition() {
+        return this.row == null && this.column == null;
     }
 
     @Override

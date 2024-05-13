@@ -5,6 +5,7 @@ import java.util.Stack;
 import model.MoveHistory;
 import model.dto.StatusDto;
 import model.piece.AbstractPiece;
+import model.piece.NullPiece;
 import model.piece.PieceCollection;
 import model.position.Column;
 import model.position.GridPosition;
@@ -40,17 +41,17 @@ public class ChessBoardWrapper {
     public AbstractPiece eliminateIfEnemyExist(Position nextPosition, Team team) {
         if (isEnemyHere(nextPosition, team)) {
             AbstractPiece eliminatedPiece = pieceCollection.getPiece(nextPosition);
-            pieceCollection.removePiece(nextPosition);
+            pieceCollection.removePiece(eliminatedPiece);
             return eliminatedPiece;
         }
-        return null;
+        return NullPiece.getEmptyPiece();
     }
 
     public GridPosition getGridPosition() {
         return gridPosition;
     }
 
-    public boolean isChessBoardIn(Position position, int rowStep, int columnStep) {
+    public boolean isPossibleStep(Position position, int rowStep, int columnStep) {
         // todo: 넘 별론데
         try {
             Row row = position.getRow();
@@ -69,33 +70,31 @@ public class ChessBoardWrapper {
             AbstractPiece piece = pieceCollection.getPiece(currentPosition);
             piece.move(nextPosition);
 
-            rollbackIfChecked(piece, currentPosition, nextPosition);
+            rollbackIfChecked(piece, currentPosition);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+    private void rollbackIfChecked(AbstractPiece abstractPiece, Position currentPosition) {
+        Team team = abstractPiece.getTeam();
 
-    private void undoMove(AbstractPiece piece, Position currentPosition, Position nextPosition) {
+        if (isChecked(team)) {
+            undoMove(abstractPiece,currentPosition);
+
+            throw new IllegalArgumentException("체크 상태라 움직일 수가 없습니다");
+        }
+    }
+    private void undoMove(AbstractPiece piece, Position currentPosition) {
         piece.forceMove(currentPosition);
         restorePieceIfEliminated();
     }
 
     private void restorePieceIfEliminated() {
-        MoveHistory pop = moveHistories.pop();
+        MoveHistory moveHistory = moveHistories.pop();
 
-        if (pop.isEliminated()) {
-            AbstractPiece eliminatedPiece = pop.getEliminatedPiece();
+        if (moveHistory.isEliminated()) {
+            AbstractPiece eliminatedPiece = moveHistory.getEliminatedPiece();
             pieceCollection.addPiece(eliminatedPiece);
-        }
-    }
-
-    private void rollbackIfChecked(AbstractPiece abstractPiece, Position currentPosition, Position nextPosition) {
-        Team team = abstractPiece.getTeam();
-
-        if (isChecked(team)) {
-            undoMove(abstractPiece,currentPosition,nextPosition);
-
-            throw new IllegalArgumentException("체크 상태라 움직일 수가 없습니다");
         }
     }
 
@@ -106,10 +105,10 @@ public class ChessBoardWrapper {
                 final Position currentPosition = piece.getPosition();
                 piece.move(nextPosition);
                 if (!isChecked(team)) {
-                    undoMove(piece,currentPosition,nextPosition);
+                    undoMove(piece,currentPosition);
                     return false;
                 }
-                undoMove(piece,currentPosition,nextPosition);
+                undoMove(piece,currentPosition);
             }
         }
         return true;
@@ -118,8 +117,7 @@ public class ChessBoardWrapper {
     public boolean isChecked(Team team) {
         Position kingPosition = findKingPosition(team);
         // 반대 팀의 모든 가능한 포지션들을 찾는다.
-        List<Position> allPossiblePosition = pieceCollection.findAllPossiblePosition(
-            team.getOpposite());
+        List<Position> allPossiblePosition = pieceCollection.findAllPossiblePosition(team.getOpposite());
 
         for (Position position : allPossiblePosition) {
             if (position.equals(kingPosition)) {

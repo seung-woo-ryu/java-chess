@@ -26,10 +26,6 @@ public class GameMachine {
     private State state;
     private Team turn;
     private ChessBoardWrapper chessBoardWrapper;
-
-    public void init() {
-        chessBoardWrapper = new ChessBoardWrapper();
-    }
     public GameMachine(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
@@ -40,6 +36,12 @@ public class GameMachine {
         this.state = this.notStartState;
 
         this.turn = Team.WHITE;
+    }
+    public void init() {
+        chessBoardWrapper = new ChessBoardWrapper();
+    }
+    public Team getTurn() {
+        return turn;
     }
     public void run() {
         do{
@@ -86,37 +88,40 @@ public class GameMachine {
             throw new IllegalArgumentException("가능한 명령이 아닙니다!");
         }
     }
-    public Team getTurn() {
-        return turn;
-    }
-
-    public void endGame() {
-        this.state = endState;
-    }
-
-    public void startGame() {
+    public void start() {
         this.state = startState;
         outputView.printInit();
     }
-
-    public void printStatus() {
-        StatusDto statusDto = chessBoardWrapper.getStatus();
-        outputView.printStatus(statusDto);
+    public void move(Position fromPosition, Position toPosition) {
+        validateTurnIsRight(fromPosition);
+        doMoveAndChangeTurn(fromPosition, toPosition);
+        printCheckIfChecked();
     }
 
-    public void move(Position fromPosition, Position toPosition) {
-        if (!isSameTeam(fromPosition)) {
-            throw new IllegalArgumentException(String.format("잘못된 명령입니다. 현재 %s이 움직일 차례입니다.", this.turn));
-        }
-
+    private void doMoveAndChangeTurn(Position fromPosition, Position toPosition) {
         chessBoardWrapper.move(fromPosition, toPosition);
         this.turn = turn.changeTurn();
+    }
 
-        if (chessBoardWrapper.isChecked(turn.getOpposite())) {
+    private void printCheckIfChecked() {
+        if (chessBoardWrapper.isChecked(turn)) {
             outputView.printCheck();
         }
     }
 
+    public void status() {
+        StatusDto statusDto = chessBoardWrapper.getStatus();
+        outputView.printStatus(statusDto);
+    }
+
+    public void end() {
+        this.state = endState;
+    }
+    private void validateTurnIsRight(Position fromPosition) {
+        if (!isSameTeam(fromPosition)) {
+            throw new IllegalArgumentException(String.format("잘못된 명령입니다. 현재 %s이 움직일 차례입니다.", this.turn));
+        }
+    }
     private boolean isSameTeam(Position fromPosition) {
         AbstractPiece piece = chessBoardWrapper.getPiece(fromPosition);
         return piece.isSameTeam(this.turn);

@@ -23,25 +23,26 @@ public class PieceCollection {
 
     public List<Position> findAllPossiblePosition(Team team) {
         List<Position> allPossiblePosition = new ArrayList<>();
-        List<List<Position>> collect = pieceList.stream()
-            .filter(piece -> piece.isSameTeam(team))
-            .map(piece -> piece.getAllNextPosition())
-            .collect(Collectors.toList());
 
-        for (List<Position> col : collect) {
+        for (List<Position> col : getEachPiecePossiblePosition(team)) {
             allPossiblePosition.addAll(col);
         }
 
         return allPossiblePosition;
     }
 
+    private List<List<Position>> getEachPiecePossiblePosition(Team team) {
+        return pieceList.stream()
+            .filter(piece -> piece.isSameTeam(team))
+            .map(piece -> piece.getAllNextPosition())
+            .collect(Collectors.toList());
+    }
+
     public void addPiece(AbstractPiece piece) {
         pieceList.add(piece);
     }
-    public void removePiece(Position position) {
-        pieceList.stream()
-            .filter(piece -> !piece.isSamePosition(position))
-            .collect(Collectors.toList());
+    public void removePiece(AbstractPiece piece) {
+        pieceList.remove(piece);
     }
 
     public static PieceCollection pieceCollection(GridPosition gridPosition, ChessBoardWrapper chessBoardWrapper) {
@@ -83,7 +84,7 @@ public class PieceCollection {
     }
     public AbstractPiece getPiece(Position position) {
         return pieceList.stream()
-            .filter(piece -> piece.getPosition().equals(position))
+            .filter(piece -> !piece.isNullPiece() && piece.isSamePosition(position))
             .findFirst()
             .orElse(NullPiece.getEmptyPiece());
     }

@@ -22,7 +22,10 @@ public class King extends AbstractPiece{
     public King(Team team, Position position, ChessBoardWrapper chessBoardWrapper) {
         super("k", 0, team, position, chessBoardWrapper);
     }
-
+    @Override
+    public boolean isNullPiece() {
+        return false;
+    }
     @Override
     public List<Position> getAllNextPosition() {
         List<Position> possiblePosition = new ArrayList<>();
@@ -37,14 +40,14 @@ public class King extends AbstractPiece{
     private void addPossiblePosition(int[] move,List<Position> possiblePosition) {
         Row row = this.position.getRow();
         Column column = this.position.getColumn();
-        if (!chessBoardWrapper.isChessBoardIn(Position.unmodifiablePosition(row,column), move[0], move[1])) {
+        if (!chessBoardWrapper.isPossibleStep(Position.of(row,column), move[0], move[1])) {
             return;
         }
 
         row = row.move(move[0]);
         column = column.move(move[1]);
 
-        Position nextPosition = Position.unmodifiablePosition(row, column);
+        Position nextPosition = Position.of(row, column);
         if (chessBoardWrapper.isTeamHere(nextPosition, this.team)) {
             return;
         }

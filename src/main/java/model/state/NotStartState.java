@@ -23,7 +23,7 @@ public class NotStartState implements State{
     @Override
     public void start() {
         gameMachine.init();
-        gameMachine.startGame();
+        gameMachine.start();
     }
 
     @Override
