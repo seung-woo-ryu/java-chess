@@ -1,6 +1,6 @@
 package model.piece;
 
-import controller.ChessBoardWrapper;
+import model.ChessBoard;
 import model.position.Position;
 import model.Team;
 import java.util.List;
@@ -12,8 +12,8 @@ public class Bishop extends AbstractPiece{
         {-1, -1},
         {1, -1}
     };
-    public Bishop(Team team,Position position, ChessBoardWrapper chessBoardWrapper) {
-        super("b", 3, team, position, chessBoardWrapper);
+    public Bishop(Team team,Position position, ChessBoard chessBoard) {
+        super("b", 3, team, position, chessBoard);
     }
 
     @Override

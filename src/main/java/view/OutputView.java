@@ -1,7 +1,7 @@
 package view;
 
-import dto.StatusDto;
-import controller.ChessBoardWrapper;
+import model.dto.StatusDto;
+import model.ChessBoard;
 import model.piece.AbstractPiece;
 import model.position.Column;
 import model.position.Position;
@@ -17,8 +17,8 @@ public class OutputView {
     private OutputView() {
     }
 
-    public static void printChessBoard(ChessBoardWrapper chessBoardWrapper) {
-        if (chessBoardWrapper != null) {
+    public static void printChessBoard(ChessBoard chessBoard) {
+        if (chessBoard != null) {
             System.out.println(" |A|B|C|D|E|F|G|H|");
             int col = 8;
             for (Row row : Row.values()) {
@@ -26,7 +26,7 @@ public class OutputView {
                 sb.append(col--);
                 for (Column column : Column.values()) {
                     Position position = Position.of(row, column);
-                    AbstractPiece piece = chessBoardWrapper.getPiece(position);
+                    AbstractPiece piece = chessBoard.getPiece(position);
                     String name = piece.isWhite() ? piece.getName() : piece.getName().toUpperCase();
                     sb.append("|").append(name);
                 }

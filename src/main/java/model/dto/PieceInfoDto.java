@@ -1,4 +1,4 @@
-package dto;
+package model.dto;
 
 import model.piece.AbstractPiece;
 

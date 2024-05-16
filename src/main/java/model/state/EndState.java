@@ -1,4 +1,4 @@
-package state;
+package model.state;
 
 public class EndState implements State{
 
@@ -8,7 +8,7 @@ public class EndState implements State{
     }
 
     @Override
-    public void move(String command) {
+    public void move(String[] command) {
         throw new IllegalArgumentException(GAME_OVER);
     }
 
@@ -30,5 +30,10 @@ public class EndState implements State{
     @Override
     public boolean isEnd() {
         return true;
+    }
+
+    @Override
+    public boolean isNotStart() {
+        return false;
     }
 }

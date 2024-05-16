@@ -1,27 +1,25 @@
-package state;
+package model.state;
 
-import controller.GameMachine;
+import controller.GameMachineController;
 import model.position.Position;
-import validator.Validator;
+import model.validator.Validator;
 
 public class StartState implements State{
     private static final String ALREADY_START = "이미 시작했습니다!";
-    private final GameMachine gameMachine;
+    private final GameMachineController gameMachineController;
 
-    public StartState(GameMachine gameMachine) {
-        this.gameMachine = gameMachine;
+    public StartState(GameMachineController gameMachineController) {
+        this.gameMachineController = gameMachineController;
     }
 
     @Override
-    public void move(String command) {
-        String[] split = command.split(" ");
+    public void move(String[] command) {
+        Validator.validateCommand(command);
 
-        Validator.validateCommand(split);
+        Position fromPosition = mapStringToPosition(command[1]);
+        Position toPosition = mapStringToPosition(command[2]);
 
-        Position fromPosition = mapStringToPosition(split[1]);
-        Position toPosition = mapStringToPosition(split[2]);
-
-        gameMachine.move(fromPosition, toPosition);
+        gameMachineController.move(fromPosition, toPosition);
     }
 
     private Position mapStringToPosition(String rowColumn) {
@@ -35,7 +33,7 @@ public class StartState implements State{
 
     @Override
     public void status() {
-        gameMachine.status();
+        gameMachineController.status();
     }
 
     @Override
@@ -45,11 +43,16 @@ public class StartState implements State{
 
     @Override
     public void end() {
-        gameMachine.end();
+        gameMachineController.end();
     }
 
     @Override
     public boolean isEnd() {
+        return false;
+    }
+
+    @Override
+    public boolean isNotStart() {
         return false;
     }
 }

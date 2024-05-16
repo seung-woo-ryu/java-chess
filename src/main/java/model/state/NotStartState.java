@@ -1,15 +1,15 @@
-package state;
+package model.state;
 
-import controller.GameMachine;
+import controller.GameMachineController;
 
 public class NotStartState implements State{
     private static final String ONLY_START_PLZ = "start를 입력해주세요!";
-    private final GameMachine gameMachine;
-    public NotStartState(GameMachine gameMachine) {
-        this.gameMachine = gameMachine;
+    private final GameMachineController gameMachineController;
+    public NotStartState(GameMachineController gameMachineController) {
+        this.gameMachineController = gameMachineController;
     }
     @Override
-    public void move(String command) {
+    public void move(String[] command) {
         throw new IllegalArgumentException(ONLY_START_PLZ);
     }
 
@@ -20,8 +20,7 @@ public class NotStartState implements State{
 
     @Override
     public void start() {
-        gameMachine.init();
-        gameMachine.start();
+        gameMachineController.lazyInit();
     }
 
     @Override
@@ -32,5 +31,10 @@ public class NotStartState implements State{
     @Override
     public boolean isEnd() {
         return false;
+    }
+
+    @Override
+    public boolean isNotStart() {
+        return true;
     }
 }

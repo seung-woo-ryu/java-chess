@@ -1,12 +1,9 @@
-import controller.GameMachine;
-import view.InputView;
+import controller.GameMachineController;
 
 public class Application {
 
     public static void main(String[] args) {
-        InputView inputView = new InputView();
-        GameMachine gameMachine = new GameMachine(inputView);
-
-        gameMachine.run();
+        GameMachineController gameMachineController = new GameMachineController();
+        gameMachineController.run();
     }
 }

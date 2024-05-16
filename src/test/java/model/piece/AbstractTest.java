@@ -1,17 +1,14 @@
 package model.piece;
 
-import controller.ChessBoardWrapper;
-import model.position.GridPosition;
+import model.ChessBoard;
 import org.junit.jupiter.api.BeforeEach;
 
 public abstract class AbstractTest {
-    protected ChessBoardWrapper chessBoardWrapper;
-    protected GridPosition gridPosition;
+    protected ChessBoard chessBoard;
 
     @BeforeEach
     void SET_UP() {
-        chessBoardWrapper = new ChessBoardWrapper();
-        gridPosition = chessBoardWrapper.getGridPosition();
+        chessBoard = new ChessBoard();
     }
 
 }

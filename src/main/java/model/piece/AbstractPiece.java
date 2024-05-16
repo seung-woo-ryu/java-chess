@@ -2,7 +2,7 @@ package model.piece;
 
 import java.util.ArrayList;
 import java.util.List;
-import controller.ChessBoardWrapper;
+import model.ChessBoard;
 import model.position.Position;
 import model.Team;
 
@@ -11,16 +11,16 @@ public abstract class AbstractPiece implements Piece{
     protected final String name;
     protected final int point;
     protected final Team team;
-    protected final ChessBoardWrapper chessBoardWrapper;
+    protected final ChessBoard chessBoard;
     protected Position position;
     protected int moveCnt;
 
-    public AbstractPiece(String name, int point, Team team, Position position, ChessBoardWrapper chessBoardWrapper) {
+    public AbstractPiece(String name, int point, Team team, Position position, ChessBoard chessBoard) {
         this.name = name;
         this.point = point;
         this.team = team;
         this.position = position;
-        this.chessBoardWrapper = chessBoardWrapper;
+        this.chessBoard = chessBoard;
         this.moveCnt = 0;
     }
     public void increaseCnt() {
@@ -54,8 +54,8 @@ public abstract class AbstractPiece implements Piece{
     public void move(Position nextPosition) {
         for (Position possiblePosition : getAllNextPosition()) {
             if (nextPosition.equals(possiblePosition)) {
-                AbstractPiece eliminatedPiece = chessBoardWrapper.eliminateIfEnemyExist(nextPosition, team);
-                chessBoardWrapper.putHistory(this.position, nextPosition, eliminatedPiece);
+                AbstractPiece eliminatedPiece = chessBoard.eliminateIfEnemyExist(nextPosition, team);
+                chessBoard.putHistory(this.position, nextPosition, eliminatedPiece);
                 this.position = nextPosition;
                 increaseCnt();
                 return;
@@ -75,17 +75,17 @@ public abstract class AbstractPiece implements Piece{
         Position currentPosition = this.position;
         do {
             // 체스 보드 좌표 안에서 움직이는 수인지 체크
-            if (!chessBoardWrapper.isPossibleStep(currentPosition, rowStep, columnStep)) {
+            if (!chessBoard.isInBoardAfterMove(currentPosition, rowStep, columnStep)) {
                 break;
             }
             Position nextPosition = currentPosition.getNextPosition(rowStep, columnStep);
             // 우리 기물이 존재하는 위치인지 확인
-            if (chessBoardWrapper.isTeamHere(nextPosition, this.team)) {
+            if (chessBoard.isTeamHere(nextPosition, this.team)) {
                 break;
             }
             possiblePosition.add(nextPosition);
             // 적 기물이 존재하면 중단
-            if (chessBoardWrapper.isEnemyHere(nextPosition, this.team)) {
+            if (chessBoard.isEnemyHere(nextPosition, this.team)) {
                 break;
             }
 
@@ -98,12 +98,12 @@ public abstract class AbstractPiece implements Piece{
         final int columnStep = move[1];
 
         Position currentPosition = this.position;
-        if (!chessBoardWrapper.isPossibleStep(currentPosition, rowStep, columnStep)) {
+        if (!chessBoard.isInBoardAfterMove(currentPosition, rowStep, columnStep)) {
             return;
         }
 
         Position nextPosition = currentPosition.getNextPosition(rowStep, columnStep);
-        if (chessBoardWrapper.isTeamHere(nextPosition, this.team)) {
+        if (chessBoard.isTeamHere(nextPosition, this.team)) {
             return;
         }
         possiblePosition.add(nextPosition);

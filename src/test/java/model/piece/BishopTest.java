@@ -20,10 +20,10 @@ class BishopTest extends AbstractTest{
         Position bishop1C = Position.of(Row.ONE, Column.C);
         Position bishop2B = Position.of(Row.TWO, Column.B);
 
-        chessBoardWrapper.move(pawn2B, pawn3B);
+        chessBoard.move(pawn2B, pawn3B);
         // when & then
         Assertions.assertDoesNotThrow(() ->
-            chessBoardWrapper.move(bishop1C, bishop2B));
+            chessBoard.move(bishop1C, bishop2B));
     }
 
     @Test
@@ -40,11 +40,11 @@ class BishopTest extends AbstractTest{
         Position bishop1C = Position.of(Row.ONE, Column.C);
         Position bishop6H = Position.of(Row.SIX, Column.H);
 
-        chessBoardWrapper.move(pawn7H, pawn6H);
-        chessBoardWrapper.move(pawn2D, pawn3D);
+        chessBoard.move(pawn7H, pawn6H);
+        chessBoard.move(pawn2D, pawn3D);
         // when & then
         Assertions.assertDoesNotThrow(() ->
-            chessBoardWrapper.move(bishop1C, bishop6H));
+            chessBoard.move(bishop1C, bishop6H));
     }
 
     @Test
@@ -57,7 +57,7 @@ class BishopTest extends AbstractTest{
 
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
-            chessBoardWrapper.move(bishop1C, bishop6H));
+            chessBoard.move(bishop1C, bishop6H));
     }
 
     @Test
@@ -69,6 +69,6 @@ class BishopTest extends AbstractTest{
         Position bishop2C = Position.of(Row.TWO, Column.C);
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
-            chessBoardWrapper.move(bishop1C, bishop2C));
+            chessBoard.move(bishop1C, bishop2C));
     }
 }

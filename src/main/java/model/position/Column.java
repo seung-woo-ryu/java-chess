@@ -18,13 +18,6 @@ public enum Column {
         this.name = name;
     }
 
-    public static int getLeftDirection() {
-        return -1;
-    }
-    public static int getRightDirection() {
-        return 1;
-    }
-
     public static Column nameOf(char columnChar) {
         String columnString = String.valueOf(columnChar);
         for (Column column : Column.values()) {

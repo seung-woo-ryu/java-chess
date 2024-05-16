@@ -1,69 +1,86 @@
 package model.piece;
 
-import controller.ChessBoardWrapper;
-import model.position.Column;
-import model.position.GridPosition;
+import model.ChessBoard;
+import java.util.ArrayList;
 import model.position.Position;
 import model.Team;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends AbstractPiece {
+    private final int TWO_STEP;
+    private final int ONE_STEP;
+    private final int FORWARD_COLUMN_STEP;
+    private final int LEFT_COLUMN_STEP;
+    private final int RIGHT_COLUMN_STEP;
+    private final int[] oneStepForwardMove;
+    private final int[] twoStepForwardMove;
+    private final int[] leftDiagonalMove;
+    private final int[] rightDiagonalMove;
+    public Pawn(Team team, Position position, ChessBoard chessBoard) {
+        super("p", 1, team, position, chessBoard);
 
-    private int whiteFirstRow = 2;
-    private int blackFirstRow = 7;
-    public Pawn(Team team, Position position, ChessBoardWrapper chessBoardWrapper) {
-        super("p", 1, team, position, chessBoardWrapper);
+        TWO_STEP = 2 * team.getDirection();
+        ONE_STEP = 1 * team.getDirection();
+        FORWARD_COLUMN_STEP = 0;
+        LEFT_COLUMN_STEP = -1;
+        RIGHT_COLUMN_STEP = 1;
+
+        oneStepForwardMove = new int[]{ONE_STEP, FORWARD_COLUMN_STEP};
+        twoStepForwardMove = new int[]{TWO_STEP, FORWARD_COLUMN_STEP};
+        leftDiagonalMove = new int[]{ONE_STEP, LEFT_COLUMN_STEP};
+        rightDiagonalMove = new int[]{ONE_STEP, RIGHT_COLUMN_STEP};
     }
 
     @Override
     public List<Position> getAllNextPosition() {
-        List<Position> positionList = new ArrayList<>();
+        final int[][] possibleMove = addPawnPossibleMove();
 
-        GridPosition gridPosition = this.chessBoardWrapper.getGridPosition();
-        int direction = this.team.getDirection();
-        int twoStep = 2 * direction;
-        int oneStep = 1 * direction;
-
-        // 2칸 전진
-        if(isFirstMove()){
-            moveForwardSpace(positionList, twoStep);
-        }
-        // 1칸 전진
-        moveForwardSpace(positionList, oneStep);
-        // 대각선 이동
-        moveDiagonallyOneSpaceIfEnemyExist(gridPosition, positionList, Column.getLeftDirection());
-        moveDiagonallyOneSpaceIfEnemyExist(gridPosition, positionList, Column.getRightDirection());
-        return positionList;
+        return getPosition(possibleMove);
     }
 
-    private void moveDiagonallyOneSpaceIfEnemyExist(GridPosition gridPosition, List<Position> positionList, int columnStep) {
-        int rowStep = this.team.getDirection();
+    private int[][] addPawnPossibleMove() {
+        List<int[]> possibleMove = new ArrayList<>();
 
-        if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
-            Position diagonalMove = this.position.getNextPosition(rowStep, columnStep);
-            if (chessBoardWrapper.isEnemyHere(diagonalMove, this.team)) {
-                positionList.add(diagonalMove);
-            }
+        if (isNothingHere(oneStepForwardMove)) {
+            possibleMove.add(oneStepForwardMove);
         }
+        if (isNothingHere(twoStepForwardMove) && isFirstMove()) {
+            possibleMove.add(twoStepForwardMove);
+        }
+
+        if (isEnemyExistOnDiagonal(LEFT_COLUMN_STEP)) {
+            possibleMove.add(leftDiagonalMove);
+        }
+        if (isEnemyExistOnDiagonal(RIGHT_COLUMN_STEP)) {
+            possibleMove.add(rightDiagonalMove);
+        }
+
+        return possibleMove.toArray(int[][]::new);
     }
 
-    private void moveForwardSpace(List<Position> positionList,int rowStep) {
-        int columnStep = 0;
-
-        if (chessBoardWrapper.isPossibleStep(this.position, rowStep, columnStep)) {
+    private boolean isNothingHere(int[] move) {
+        final int rowStep = move[0];
+        final int columnStep = move[1];
+        if (chessBoard.isInBoardAfterMove(this.position, rowStep, columnStep)) {
             Position nextPosition = this.position.getNextPosition(rowStep, columnStep);
-            if (chessBoardWrapper.isNothingHere(nextPosition)) {
-                positionList.add(nextPosition);
+            return chessBoard.isNothingHere(nextPosition);
+        }
+        return false;
+    }
+
+    private boolean isEnemyExistOnDiagonal(int columnDirection) {
+        if (chessBoard.isInBoardAfterMove(this.position, ONE_STEP, columnDirection)) {
+            Position nextPosition = this.position.getNextPosition(ONE_STEP, columnDirection);
+            if (chessBoard.isEnemyHere(nextPosition, this.team)) {
+                return true;
             }
         }
+
+        return false;
     }
 
     private boolean isFirstMove() {
-        final int firstRow = this.team.isWhite() ?
-            whiteFirstRow : blackFirstRow;
-
-        return this.position.isSameRow(firstRow);
+        return this.moveCnt == 0;
     }
     @Override
     public boolean isKing() {

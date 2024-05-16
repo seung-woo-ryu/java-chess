@@ -1,6 +1,6 @@
 package model.piece;
 
-import controller.ChessBoardWrapper;
+import model.ChessBoard;
 import model.position.Position;
 import model.Team;
 import java.util.List;
@@ -17,8 +17,8 @@ public class Knight extends AbstractPiece{
         {2, -1},
         {-2, -1}
     };
-    public Knight(Team team, Position position, ChessBoardWrapper chessBoardWrapper) {
-        super("n", 3, team, position, chessBoardWrapper);
+    public Knight(Team team, Position position, ChessBoard chessBoard) {
+        super("n", 3, team, position, chessBoard);
     }
     @Override
     public boolean isNullPiece() {

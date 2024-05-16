@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ChessBoardWrapperTest extends AbstractTest {
+class ChessBoardTest extends AbstractTest {
 
     @Test
     @DisplayName("다음 수가 체크 상태를 유발하면 Exception 발생")
@@ -24,11 +24,11 @@ class ChessBoardWrapperTest extends AbstractTest {
         Position whitePawn2D = Position.of(Row.TWO, Column.D);
         Position whitePawn3D = Position.of(Row.THREE, Column.D);
         // when
-        chessBoardWrapper.move(blackPawn7E, blackPawn6E);
-        chessBoardWrapper.move(blackBishop8F, blackBishop4B);
+        chessBoard.move(blackPawn7E, blackPawn6E);
+        chessBoard.move(blackBishop8F, blackBishop4B);
         // then
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            chessBoardWrapper.move(whitePawn2D, whitePawn3D);
+            chessBoard.move(whitePawn2D, whitePawn3D);
         });
     }
 
@@ -48,11 +48,11 @@ class ChessBoardWrapperTest extends AbstractTest {
         Position blackQueen8D = Position.of(Row.EIGHT, Column.D);
         Position blackQueen4H = Position.of(Row.FOUR, Column.H);
         // when
-        chessBoardWrapper.move(blackPawn7E, blackPawn5E);
-        chessBoardWrapper.move(whitePawn2F, whitePawn3F);
-        chessBoardWrapper.move(whitePawn2G, whitePawn4G);
-        chessBoardWrapper.move(blackQueen8D, blackQueen4H);
+        chessBoard.move(blackPawn7E, blackPawn5E);
+        chessBoard.move(whitePawn2F, whitePawn3F);
+        chessBoard.move(whitePawn2G, whitePawn4G);
+        chessBoard.move(blackQueen8D, blackQueen4H);
         // then
-        Assertions.assertTrue(chessBoardWrapper.isCheckmate(Team.WHITE));
+        Assertions.assertTrue(chessBoard.isCheckmate(Team.WHITE));
     }
 }

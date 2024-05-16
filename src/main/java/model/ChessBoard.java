@@ -1,32 +1,26 @@
-package controller;
+package model;
 
 import java.util.Stack;
-import model.MoveHistory;
-import dto.StatusDto;
+import model.dto.StatusDto;
 import model.piece.AbstractPiece;
 import model.piece.NullPiece;
 import model.piece.PieceCollection;
+import model.piece.PieceCollectionGenerator;
 import model.position.Column;
-import model.position.GridPosition;
 import model.position.Position;
 import model.position.Row;
-import model.Team;
 
-public class ChessBoardWrapper {
-
-    private final GridPosition gridPosition;
+public class ChessBoard {
     private PieceCollection pieceCollection;
     private Stack<MoveHistory> moveHistories;
-    public ChessBoardWrapper() {
-        this.gridPosition = new GridPosition();
-        this.pieceCollection = PieceCollection.pieceCollection(gridPosition, this);
+    public ChessBoard() {
+        this.pieceCollection = PieceCollectionGenerator.pieceCollection(this);
         this.moveHistories = new Stack<>();
     }
 
     public AbstractPiece getPiece(Position position) {
-        return pieceCollection.getPiece(position);
+        return pieceCollection.getPieceOfPosition(position);
     }
-
     public boolean isEnemyHere(Position nextPosition, Team currentTeam) {
         return pieceCollection.isEnemyHere(nextPosition, currentTeam);
     }
@@ -36,9 +30,6 @@ public class ChessBoardWrapper {
     public boolean isNothingHere(Position nextPosition) {
         return pieceCollection.isNothingHere(nextPosition);
     }
-    public GridPosition getGridPosition() {
-        return gridPosition;
-    }
     public AbstractPiece eliminateIfEnemyExist(Position nextPosition, Team team) {
         if (isEnemyHere(nextPosition, team)) {
             return removePiece(nextPosition);
@@ -46,19 +37,18 @@ public class ChessBoardWrapper {
         return NullPiece.getEmptyPiece();
     }
     private AbstractPiece removePiece(Position nextPosition) {
-        AbstractPiece eliminatedPiece = pieceCollection.getPiece(nextPosition);
+        AbstractPiece eliminatedPiece = pieceCollection.getPieceOfPosition(nextPosition);
         pieceCollection.removePiece(eliminatedPiece);
         return eliminatedPiece;
     }
-    public boolean isPossibleStep(Position position, int rowStep, int columnStep) {
+    public boolean isInBoardAfterMove(Position position, int rowStep, int columnStep) {
         final Row row = position.getRow();
         final Column column = position.getColumn();
-
         return row.isPossibleMove(rowStep) && column.isPossibleMove(columnStep);
     }
     public void move(Position currentPosition, Position nextPosition) {
         try {
-            AbstractPiece piece = pieceCollection.getPiece(currentPosition);
+            AbstractPiece piece = pieceCollection.getPieceOfPosition(currentPosition);
             piece.move(nextPosition);
 
             rollbackIfChecked(piece, currentPosition);

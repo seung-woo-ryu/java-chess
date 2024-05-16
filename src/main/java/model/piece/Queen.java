@@ -1,6 +1,6 @@
 package model.piece;
 
-import controller.ChessBoardWrapper;
+import model.ChessBoard;
 import model.position.Position;
 import model.Team;
 import java.util.List;
@@ -17,8 +17,8 @@ public class Queen extends AbstractPiece{
         {0, 1},
         {0, -1}
     };
-    public Queen(Team team, Position position, ChessBoardWrapper chessBoardWrapper) {
-        super("q", 9, team, position, chessBoardWrapper);
+    public Queen(Team team, Position position, ChessBoard chessBoard) {
+        super("q", 9, team, position, chessBoard);
     }
 
     @Override

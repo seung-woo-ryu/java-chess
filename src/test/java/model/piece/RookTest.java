@@ -18,10 +18,10 @@ class RookTest extends AbstractTest{
         Position rook1A = Position.of(Row.ONE, Column.A);
         Position rook3A = Position.of(Row.THREE, Column.A);
 
-        chessBoardWrapper.move(pawn2A, pawn4A);
+        chessBoard.move(pawn2A, pawn4A);
         // when & then
         Assertions.assertDoesNotThrow(() ->
-            chessBoardWrapper.move(rook1A, rook3A));
+            chessBoard.move(rook1A, rook3A));
     }
     @Test
     @DisplayName("적 기물이 존재하는 위치에 이동 가능")
@@ -37,13 +37,13 @@ class RookTest extends AbstractTest{
         Position rook1A = Position.of(Row.ONE, Column.A);
         Position rook7A = Position.of(Row.SEVEN, Column.A);
 
-        chessBoardWrapper.move(whitePawn2A, whitePawn4A);
-        chessBoardWrapper.move(blackPawn7B, blackPawn5B);
-        chessBoardWrapper.move(whitePawn4A, whitePawn5B);
+        chessBoard.move(whitePawn2A, whitePawn4A);
+        chessBoard.move(blackPawn7B, blackPawn5B);
+        chessBoard.move(whitePawn4A, whitePawn5B);
 
         // when & then
         Assertions.assertDoesNotThrow(() ->
-            chessBoardWrapper.move(rook1A, rook7A));
+            chessBoard.move(rook1A, rook7A));
     }
 
     @Test
@@ -54,7 +54,7 @@ class RookTest extends AbstractTest{
 
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
-            chessBoardWrapper.move(rook1A, rook7A));
+            chessBoard.move(rook1A, rook7A));
     }
     @Test
     @DisplayName("직진 이동이 아닌 움직임 불가능.")
@@ -64,6 +64,6 @@ class RookTest extends AbstractTest{
 
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class,() ->
-            chessBoardWrapper.move(rook1A, rook2B));
+            chessBoard.move(rook1A, rook2B));
     }
 }

@@ -40,10 +40,6 @@ public class Position {
         return new Position(null, null);
     }
 
-    public boolean isNullPosition() {
-        return this.row == null && this.column == null;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(row, column);
@@ -59,9 +55,5 @@ public class Position {
         }
         Position position = (Position) o;
         return row == position.row && column == position.column;
-    }
-
-    public boolean isSameRow(int firstRow) {
-        return this.row.getValue() == firstRow;
     }
 }
